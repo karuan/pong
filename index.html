@@ -17,6 +17,7 @@
    var score1=score2=0;
    var xv=yv=8;
    var ais=5;
+   var p1dead=p2dead=false;
    function init(){
    console.log("Welcome to Pong!!!");
       canvas = document.getElementById("myCanvas");
@@ -38,7 +39,9 @@
       by=canvas.width/2;
       xv=-xv;
       yv=6;
-   }
+      p1dead=p2dead=false;
+      
+    }
 
    function update(){
       //updating positions - movement
@@ -49,9 +52,11 @@
       }
       //boucing off the left side
       if (bx<pt){
-         if (by>p1y && by<p1y+ph){
+         if (by>p1y && by<p1y+ph && p1dead!=true){
             xv=-xv;
-         }else if ((by<p1y || by>p1y+ph) && bx<0){
+         }else{
+            p1dead=true;
+         } if (p1dead===true && bx<0){
             score2++;
             reset();
          }
@@ -59,9 +64,11 @@
 
       //bouncing off teh right side
       if (bx>canvas.width-pt){
-         if (by>p2y && by<p2y+ph){
+         if (by>p2y && by<p2y+ph && p2dead!=true){
             xv=-xv;
-         }else if ((by<p2y || by>p2y+ph) && bx>canvas.width){
+         }else{
+            p2dead=true;
+         } if (p2dead===true  && bx>canvas.width){
             score1++;
             reset();
          }
