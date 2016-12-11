@@ -3,9 +3,18 @@
    <title>
       Pong Game
    </title>
+
+   <style>
+   #canvasContainer{
+      padding: 10px;
+      text-align: center;
+   }
+   </style>
 </head>
 <body>
-<canvas id= "myCanvas" width="400" height="300"> </canvas>
+<div id="canvasContainer">
+<canvas id= "myCanvas"> </canvas>
+</div>
 <script>
    var canvas = null;
    var cxt = null;
@@ -21,6 +30,8 @@
    function init(){
    console.log("Welcome to Pong!!!");
       canvas = document.getElementById("myCanvas");
+      canvas.width=Math.min(800,window.innerWidth-40);
+      canvas.height=Math.min(600,window.innerHeight-40);
       cxt = canvas.getContext("2d");
      window.setInterval(update, 1000/30);
        canvas.addEventListener('mousemove', function(e){
@@ -35,7 +46,8 @@
    window.onload = init;
 
    function reset(){
-      bx=canvas.width/2;
+
+     bx=canvas.width/2;
       by=canvas.width/2;
       xv=-xv;
       yv=6;
@@ -44,7 +56,21 @@
     }
 
    function update(){
-      //updating positions - movement
+     var newWidth=Math.min(800,window.innerWidth-40);
+      var newHeight=Math.min(600,window.innerHeight-40);
+      var widthRatio=newWidth/canvas.width;
+      var heightRatio=newHeight/canvas.height;
+      canvas.width=newWidth;
+      canvas.height=newHeight;
+      bx=bx*widthRatio;
+      by=by*heightRatio;
+      p2y=p2y*heightRatio;
+      p1y=p1y*heightRatio;      
+
+
+
+
+     //updating positions - movement
       bx=bx+xv;
       by=by+yv;  
       if ((by<0 && yv<0) || (by>canvas.height && yv>0)){ //bouncing off the bottom or top
