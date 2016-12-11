@@ -1,0 +1,100 @@
+<html>
+<head>
+   <title>
+      Pong Game
+   </title>
+</head>
+<body>
+<canvas id= "myCanvas" width="400" height="300"> </canvas>
+<script>
+   var canvas = null;
+   var cxt = null;
+   var p1y=p2y=40;
+   var ph=100;
+   var pt=10;
+   var bx=by=50;
+   var bd=10;
+   var score1=score2=0;
+   var xv=yv=8;
+   var ais=5;
+   function init(){
+   console.log("Welcome to Pong!!!");
+      canvas = document.getElementById("myCanvas");
+      cxt = canvas.getContext("2d");
+     window.setInterval(update, 1000/30);
+       canvas.addEventListener('mousemove', function(e){
+         p1y=e.clientY-ph/2;
+      });
+     
+
+
+   }
+
+   
+   window.onload = init;
+
+   function reset(){
+      bx=canvas.width/2;
+      by=canvas.width/2;
+      xv=-xv;
+      yv=6;
+   }
+
+   function update(){
+      //updating positions - movement
+      bx=bx+xv;
+      by=by+yv;  
+      if ((by<0 && yv<0) || (by>canvas.height && yv>0)){ //bouncing off the bottom or top
+         yv=-yv;
+      }
+      //boucing off the left side
+      if (bx<pt){
+         if (by>p1y && by<p1y+ph){
+            xv=-xv;
+         }else if ((by<p1y || by>p1y+ph) && bx<0){
+            score2++;
+            reset();
+         }
+      }
+
+      //bouncing off teh right side
+      if (bx>canvas.width-pt){
+         if (by>p2y && by<p2y+ph){
+            xv=-xv;
+         }else if ((by<p2y || by>p2y+ph) && bx>canvas.width){
+            score1++;
+            reset();
+         }
+      }
+
+
+       //coding the AI movement
+      if (p2y+ph/2 < by){
+         p2y=p2y+ais;
+      }else{
+         p2y=p2y-ais;
+      }
+   
+
+      //drawing the items onto the canvas
+      cxt.fillStyle="black";
+      cxt.fillRect(0,0,canvas.width, canvas.height);
+      cxt.fillStyle="white";
+      cxt.fillRect(0,p1y, pt, ph);
+      cxt.fillRect(canvas.width-pt, p2y,pt,ph);
+      cxt.fillRect(bx,by,bd,bd);
+      cxt.fillText(score1, 100, 100);
+      cxt.fillText(score2, canvas.width-100, 100);
+         
+
+
+
+   }
+
+
+
+</script>
+</body>
+
+
+</html>
