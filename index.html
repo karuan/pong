@@ -27,13 +27,14 @@
    var xv=yv=8;
    var ais=5;
    var p1dead=p2dead=false;
-   function init(){
+   var myUpdate;
+    function init(){
    console.log("Welcome to Pong!!!");
       canvas = document.getElementById("myCanvas");
       canvas.width=Math.min(800,window.innerWidth-40);
       canvas.height=Math.min(600,window.innerHeight-40);
       cxt = canvas.getContext("2d");
-     window.setInterval(update, 1000/30);
+    myUpdate =  window.setInterval(update, 1000/30);
        canvas.addEventListener('mousemove', function(e){
          p1y=e.clientY-ph/2;
       });
@@ -46,13 +47,27 @@
    window.onload = init;
 
    function reset(){
-
-     bx=canvas.width/2;
+       var deathText = p1dead==true? "YOU LOST! Press Space to Resume": "YOU WON! Press Space to Resume";
+    window.clearInterval(myUpdate);
+  
+   function temp(){  cxt.fillStyle="white";
+   cxt.font= "30px Arial"; 
+   cxt.textAlign="center";
+   cxt.fillText(deathText,canvas.width/2,canvas.height/3);
+     }   
+     window.setTimeout(temp, 1); 
+    
+       bx=canvas.width/2;
       by=canvas.width/2;
       xv=-xv;
       yv=6;
       p1dead=p2dead=false;
-      
+document.body.onkeyup = function(e){
+    if(e.keyCode == 32){
+      myUpdate= window.setInterval(update, 1000/30);
+   }
+}     
+ 
     }
 
    function update(){
@@ -116,11 +131,11 @@
       cxt.fillRect(0,p1y, pt, ph);
       cxt.fillRect(canvas.width-pt, p2y,pt,ph);
       cxt.fillRect(bx,by,bd,bd);
-      cxt.fillText(score1, 100, 100);
-      cxt.fillText(score2, canvas.width-100, 100);
+       cxt.font= "20px Arial"; 
+      cxt.textAlign="center";
+       cxt.fillText("PLAYER1: "+score1, 100, 100);
+      cxt.fillText("PLAYER2: "+score2, canvas.width-100, 100);
          
-
-
 
    }
 
